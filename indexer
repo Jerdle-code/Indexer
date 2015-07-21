@@ -1,0 +1,95 @@
+#! /bin/bash
+	export DISTROS=/home/$USER/distros
+	export OIFS=$IFS
+	export IFS='
+'
+list(){
+	for line in $(cat $DISTROS)
+		do display
+	done
+	}
+display(){
+	echo "$(echo "$line" | cut -f1 -d'^' -) version $(echo "$line" | cut -f2 -d'^' -) is on LXFDVD number $(echo $line | cut -f3 -d '^' -)"
+}
+finddvd(){
+	echo "Which distro are you looking for?"
+	read distro
+	for line in $(grep $distro $DISTROS);
+		do display
+	done
+}
+finddistro(){
+	echo "Which DVD are you looking for distros on?"
+	read dvd
+	for line in $(grep $dvd $DISTROS);
+		do display
+	done
+}
+add(){
+	echo "Which distro are you adding?"
+	read distro
+	echo "Which version is it?"
+	read version
+	echo "Which DVD is it on?"
+	read dvd
+	echo -n "$distro" >> $DISTROS
+	echo -n '^' >> $DISTROS
+	echo -n "$version" >> $DISTROS
+	echo -n '^' >> $DISTROS
+	echo "$dvd" >> $DISTROS
+	sort $DISTROS -o $DISTROS
+}
+remove(){
+	echo "Which distro are you removing?"
+	read distro
+	echo "Which version is it?"
+	read version
+	echo "Which DVD is it on?"
+	read dvd
+	for line in $(grep "$distro" $DISTROS)
+		do removethis=$(echo $line | grep "$version" | grep "$dvd")
+		display removethis
+		echo "Are you SURE you want to remove this distro? (y/N)"
+		read input
+		if [ "$input" = "y" ] || [ "$input" = "Y" ]
+			then grep -v "$line" $DISTROS > /tmp/foo$$
+			mv /tmp/foo$$ $DISTROS
+			sort $DISTROS -o $DISTROS
+		fi
+	done
+}
+main(){
+	valid=1
+	until [ $valid -eq 0 ]
+		do echo "What do you want to do?"
+		echo '1: list all distros'
+		echo '2: find which DVD a distro is on'
+		echo '3: list the contents of a DVD'
+		echo '4: add a distro'
+		echo '5: remove a distro'
+		echo 'q: quit'
+		read choice
+		case $choice in 
+		1)
+			list
+			valid=0;;
+		2)
+			finddvd
+			valid=0;;
+		3)
+			finddistro
+			valid=0;;
+		4)
+			add
+			valid=0;;
+		5)
+			remove
+			valid=0;;
+		q)
+			exit;;
+		*)
+			echo 'ERROR! Type 1, 2, 3, 4, 5, or q to quit!'
+		esac
+	done
+}
+main
