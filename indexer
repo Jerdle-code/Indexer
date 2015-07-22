@@ -59,8 +59,7 @@ remove(){
 	done
 }
 main(){
-	valid=1
-	until [ $valid -eq 0 ]
+	while true
 		do echo "What do you want to do?"
 		echo '1: list all distros'
 		echo '2: find which DVD a distro is on'
@@ -71,20 +70,15 @@ main(){
 		read choice
 		case $choice in 
 		1)
-			list
-			valid=0;;
+			list;;
 		2)
-			finddvd
-			valid=0;;
+			finddvd;;
 		3)
-			finddistro
-			valid=0;;
+			finddistro;;
 		4)
-			add
-			valid=0;;
+			add;;
 		5)
-			remove
-			valid=0;;
+			remove;;
 		q)
 			exit;;
 		*)
