@@ -1,7 +1,8 @@
 #! /bin/bash
-	export DISTROS=/home/$USER/distros
-	export OIFS=$IFS
-	export IFS='
+: ${DISTROS:="$HOME/distros"}
+export DISTROS
+export OIFS=$IFS
+export IFS='
 '
 list(){
 	for line in $(cat $DISTROS)
@@ -46,8 +47,8 @@ remove(){
 	read version
 	echo "Which DVD is it on?"
 	read dvd
-	for line in $(grep "$distro" $DISTROS)
-		do removethis=$(echo $line | grep "$version" | grep "$dvd")
+	for line in $DISTROS
+		do removethis=$(echo $line | grep $distro | grep "$version" | grep "$dvd")
 		display removethis
 		echo "Are you SURE you want to remove this distro? (y/N)"
 		read input
@@ -58,15 +59,38 @@ remove(){
 		fi
 	done
 }
+reset(){
+	echo "Are you SURE you want to reset the database? (y/N)"
+	read input
+	if [ "$input" = "y" ] || [ "$input" = "Y" ]
+		then echo - '' > $DISTROS
+	fi
+}
 main(){
 	while true
 		do echo "What do you want to do?"
-		echo '1: list all distros'
+		echo '1: read-only operations'
+		echo '2: edit the database'
+		echo 'q: quit'
+		read choice
+		case $choice in 
+		1)
+			ro;;
+		2)
+			rw;;
+		q)
+			exit;;
+		*)
+			echo 'Type 1, 2 or q to quit.'
+		esac
+	done
+}
+ro(){
+	while true
+		do echo '1: list all distros'
 		echo '2: find which DVD a distro is on'
 		echo '3: list the contents of a DVD'
-		echo '4: add a distro'
-		echo '5: remove a distro'
-		echo 'q: quit'
+		echo 'q: go back'
 		read choice
 		case $choice in 
 		1)
@@ -75,14 +99,31 @@ main(){
 			finddvd;;
 		3)
 			finddistro;;
-		4)
-			add;;
-		5)
-			remove;;
 		q)
-			exit;;
+			break;;
 		*)
-			echo 'ERROR! Type 1, 2, 3, 4, 5, or q to quit!'
+			echo 'Type 1, 2, 3, or q to go back.'
+		esac
+	done
+}
+rw(){
+	while true
+		do echo '1: add a distro'
+		echo '2: remove a distro'
+		echo '3: reset the database'
+		echo 'q: go back'
+		read choice
+		case $choice in 
+		1)
+			add;;
+		2)
+			remove;;
+		3)
+			reset;;
+		q)
+			break;;
+		*)
+			echo 'Type 1, 2, or q to go back.'
 		esac
 	done
 }
