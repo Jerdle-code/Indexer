@@ -1,6 +1,4 @@
-#############################################################################
-#   Unless you know Python 3, only edit the arguments to the last function  #
-#############################################################################
+#   DO NOT EDIT
 def program(thing, group, place, indexfile):
     global index
     index = open(indexfile,'r+')
@@ -117,9 +115,3 @@ def rw(thing, group, place, indexfile):
             break
         else:
             print("Input 1-3!")
-#####################################################
-#               NO EDITING ABOVE HERE               #
-#####################################################
-#                   EDIT BELOW HERE                 #
-#####################################################            
-program('song', 'artist', 'album', '/home/daniel/foo')
