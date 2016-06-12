@@ -1,8 +1,15 @@
 #   DO NOT EDIT
-def program(thing, group, place, indexfile):
-    global index
-    index = open(indexfile,'r+')
-    mainprogram(thing, group, place, indexfile)
+def program():
+	import configparser, os
+	config = configparser.ConfigParser()
+	config.read(os.path.expanduser('~/.config/indexer/indexer.conf'))
+	thing = config["Config"]["Item"]
+	group = config["Config"]["Category"]
+	place = config["Config"]["Object"]
+	indexfile = os.path.expanduser(config["Config"]["File"])
+	global index
+	index = open(indexfile,'r+')
+	mainprogram(thing, group, place, indexfile)
 def listall(thing, group, place):
     index.seek(0)
     for line_list in index:
@@ -115,3 +122,4 @@ def rw(thing, group, place, indexfile):
             break
         else:
             print("Input 1-3!")
+program()
