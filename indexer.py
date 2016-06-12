@@ -1,4 +1,3 @@
-#   DO NOT EDIT
 def program():
 	import configparser, os
 	config = configparser.ConfigParser()
