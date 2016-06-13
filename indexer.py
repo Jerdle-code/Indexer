@@ -71,17 +71,20 @@ def mainprogram(thing, group, place, indexfile):
         print("What type of operation do you want to do?")
         print("1: read-only operations")
         print("2: edit the database")
+        print("3: change the settings")
         print("q: quit")
         choice_main = input()
         if choice_main == '1':
             ro(thing, group, place)
         elif choice_main == '2':
             rw(thing, group, place, indexfile)
+        elif choice_main == '3':
+            conf()
         elif choice_main == 'q':
             index.close()
             exit()
         else:
-            print("Input 1 or 2!")
+            print("Input 1-3!")
 def ro(thing, group, place):
     while True:
         print("Which operation do you want to do?")
@@ -121,4 +124,14 @@ def rw(thing, group, place, indexfile):
             break
         else:
             print("Input 1-3!")
+def conf():
+	import configparser, os
+	config = configparser.ConfigParser()
+	config["Config"] = {}
+	config["Config"]["Item"] = input("Enter the item that is being indexed (e.g. track)    ")
+	config["Config"]["Category"] = input("Enter the group that the item is in (e.g. artist)    ")
+	config["Config"]["Object"] = input("Enter the physical object containing the items (e.g. CD)    ")
+	config["Config"]["File"] = input("Enter the filename of the database    ")
+	with open(os.path.expanduser('~/.config/indexer/indexer.conf'), "w") as configfile:
+		config.write(configfile)
 program()
