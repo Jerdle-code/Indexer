@@ -93,6 +93,7 @@ def ro(thing, group, place):
         print("3: list everything with/by a specific " + group)
         print("4: list everything on a/an " + place)
         print("b: back")
+        print("q: exit")
         choice_ro = input()
         if choice_ro == '1':
             listall(thing, group, place)
@@ -104,6 +105,9 @@ def ro(thing, group, place):
             listplace(thing, group, place)
         elif choice_ro == 'b':
             break
+        elif choice_ro == 'q':
+            index.close()
+            exit()
         else:
             print("Input 1-4!")
 def rw(thing, group, place, indexfile):
@@ -113,6 +117,7 @@ def rw(thing, group, place, indexfile):
         print("2: remove a/an " + thing)
         print("3: wipe the database")
         print("b: back")
+        print("q: exit")
         choice_rw = input()
         if choice_rw == '1':
             add(thing, group, place)
@@ -122,6 +127,9 @@ def rw(thing, group, place, indexfile):
             reset(thing, group, place, indexfile)
         elif choice_rw == 'b':
             break
+        elif choice_rw == 'q':
+            index.close()
+            exit()
         else:
             print("Input 1-3!")
 def conf():
@@ -134,4 +142,5 @@ def conf():
 	config["Config"]["File"] = input("Enter the filename of the database    ")
 	with open(os.path.expanduser('~/.config/indexer/indexer.conf'), "w") as configfile:
 		config.write(configfile)
+	exit()
 program()
